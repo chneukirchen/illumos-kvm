@@ -2,13 +2,13 @@
 # Copyright (c) 2012, Joyent, Inc.  All Rights Reserved.
 #
 
-KERNEL_SOURCE =	$(PWD)/../../illumos
+KERNEL_SOURCE =	/illumos-gcc/illumos-gate/
 MDB_SOURCE =	$(KERNEL_SOURCE)/usr/src/cmd/mdb
-PROTO_AREA =	$(PWD)/../../../proto
+PROTO_AREA =   /illumos-gcc/illumos-gate/proto/root_i386
 
-CC =		$(PROTO_AREA)/usr/bin/gcc
-LD =		$(PROTO_AREA)/usr/bin/ld
-CTFBINDIR =	$(KERNEL_SOURCE)/usr/src/tools/proto/*/opt/onbld/bin/i386
+CC =           /opt/gcc/4.4.4/bin/gcc
+LD =           /usr/bin/ld
+CTFBINDIR =    /opt/onbld/bin/i386
 CTFCONVERT =	$(CTFBINDIR)/ctfconvert
 CTFMERGE =	$(CTFBINDIR)/ctfmerge
 CSTYLE =	$(KERNEL_SOURCE)/usr/src/tools/scripts/cstyle
@@ -249,6 +249,8 @@ KMOD_SRCS =			\
 	kvm_i8259.c		\
 	kvm_coalesced_mmio.c	\
 	kvm_irq_comm.c		\
+	kvm_glue_alloc.c        \
+	kvm_svm.c               \
 	kvm_cache_regs.c
 
 DMOD_SRCS = \
