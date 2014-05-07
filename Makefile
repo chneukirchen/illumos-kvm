@@ -6,7 +6,7 @@ KERNEL_SOURCE =	/illumos-gcc/illumos-gate/
 MDB_SOURCE =	$(KERNEL_SOURCE)/usr/src/cmd/mdb
 PROTO_AREA =   /illumos-gcc/illumos-gate/proto/root_i386
 
-CC =           /opt/gcc/4.4.4/bin/gcc
+CC =           /opt/gcc-4.4.4/bin/gcc
 LD =           /usr/bin/ld
 CTFBINDIR =    /opt/onbld/bin/i386
 CTFCONVERT =	$(CTFBINDIR)/ctfconvert
@@ -145,7 +145,6 @@ LINKMOD_CFLAGS = \
 
 USER_LDFLAGS = \
 	-Wl,-Bdirect \
-	-Wl,-zfatal-warnings \
 	-Wl,-zassert-deflib \
 	-Wl,-zguidance
 
