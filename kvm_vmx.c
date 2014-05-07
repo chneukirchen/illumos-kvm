@@ -13,7 +13,7 @@
  * This work is licensed under the terms of the GNU GPL, version 2.  See
  * the COPYING file in the top-level directory.
  *
- * Copyright (c) 2014 Joyent, Inc. All rights reserved.
+ * Copyright (c) 2012 Joyent, Inc. All rights reserved.
  */
 
 #include <sys/sysmacros.h>
@@ -22,7 +22,6 @@
 #include <asm/cpu.h>
 #include <sys/x86_archext.h>
 #include <sys/xc_levels.h>
-#include <sys/machsystm.h>
 
 #include "kvm_bitops.h"
 #include "kvm_msr.h"
@@ -497,6 +496,7 @@ __vcpu_clear(void *arg)
 
 	if (current_vmcs[cpu] == vmx->vmcs)
 		current_vmcs[cpu] = NULL;
+	rdtscll(vmx->vcpu.arch.host_tsc);
 
 	vmx->vcpu.cpu = -1;
 	vmx->launched = 0;
@@ -873,7 +873,12 @@ vmx_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
 		/*
 		 * Make sure the time stamp counter is monotonic.
 		 */
-		vmcs_write64(TSC_OFFSET, tsc_gethrtime_tick_delta());
+		rdtscll(tsc_this);
+		if (tsc_this < vcpu->arch.host_tsc) {
+			delta = vcpu->arch.host_tsc - tsc_this;
+			new_offset = vmcs_read64(TSC_OFFSET) + delta;
+			vmcs_write64(TSC_OFFSET, new_offset);
+		}
 	}
 }
 
